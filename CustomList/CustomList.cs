@@ -7,72 +7,89 @@ using System.Threading.Tasks;
 
 namespace CustomList
 {
-    class CustomList<T> : IEnumerable
+    public class CustomList<T> : IEnumerable
     {
         T[] contents;
-        public int Capacity { get; set; }
-        public int Count
-        {
-            get
-            {
-                int count = 0;
-                if (contents != null)
-                {
-                    foreach (object item in contents)
-                    {
-                        count++;
-                    }
-                    return count;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        private int capacity;
+        private int count;
+        public int Capacity { get { return capacity; } set {; } } 
+        public int Count { get { return count; } set {; } }
         public CustomList()
         {
-            Capacity = 10;
-            contents = new T[Capacity];
+            count = 0;
+            capacity = 10;
+            contents = new T[capacity];
         }
         public void Add(T item)
         {
-            if(Count >= Capacity)
+            if(count >= capacity)
             {
-                T[] temp = new T[Capacity * 2];
-                for(int i = 0; i < Count; i++)
+                T[] temp = new T[capacity = capacity * 2];
+                for(int i = 0; i < count; i++)
                 {
                     temp[i] = contents[i];
                 }
-                temp[Count] = item;
+                temp[count] = item;
                 contents = temp;
+                count++;
             }
             else
             {
-                T[] temp = new T[Capacity];
-                for (int i = 0; i < Count; i++)
+                T[] temp = new T[capacity];
+                for (int i = 0; i < count; i++)
                 {
                     temp[i] = contents[i];
                 }
-                temp[Count] = item;
+                temp[count] = item;
                 contents = temp;
+                count++;
             } 
-        }
-        public bool RemoveAt(T item)
-        {
-
         }
         public void Insert(int index, T item)
         {
-
+            contents[index] = item;
         }
-        public static CustomList<T> operator +(CustomList<T> list1, CustomList<T> list2)
+        public object ReadIndex(int index)
         {
-
+            object item;
+            item = contents[index];
+            return item;
         }
-        public static CustomList<T> operator -(CustomList<T> list1, CustomList<T> list2)
+        public int IndexOf(T item)
         {
-
+            int index = -1;
+            for (int i = 0; i < capacity; i++)
+            {
+                if (contents[i].Equals(item))
+                {
+                    index = i;
+                }
+            }
+            return index;
+        }
+        public void RemoveAt(int index)
+        {
+            contents[index] = default(T);
+        }
+        public bool Remove(T item)
+        {
+            try
+            {
+                int index = IndexOf(item);
+                RemoveAt(index);
+                return true;
+            }
+            catch { return false; }
+        }
+        //public static CustomList<T> operator +(CustomList<T> list1, CustomList<T> list2)
+        //{
+        //}
+        //public static CustomList<T> operator -(CustomList<T> list1, CustomList<T> list2)
+        //{
+        //}
+        public override string ToString()
+        {
+            return base.ToString();
         }
         public IEnumerator<T> GetEnumerator()
         {
@@ -81,7 +98,6 @@ namespace CustomList
                 yield return contents[i];
             }
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
