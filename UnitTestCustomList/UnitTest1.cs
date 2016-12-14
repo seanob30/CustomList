@@ -83,7 +83,7 @@ namespace UnitTestCustomList
             numbers.Add(30);
             numbers.Add(35);
             //act
-            numbers.Insert(1, 0);
+            numbers.InsertAt(1, 0);
             //assert
             Assert.AreEqual(numbers.ReadIndex(1), 0);
         }
@@ -115,5 +115,86 @@ namespace UnitTestCustomList
             //assert
             Assert.AreEqual(2, numbers.IndexOf(35));
         }
+        [TestMethod]
+        public void TestRemove()
+        {
+            //arrange
+            CustomList<int> numbers = new CustomList<int>();
+            numbers.Add(23);
+            numbers.Add(30);
+            numbers.Add(35);
+            //act
+            numbers.Remove(35);
+            //assert
+            Assert.AreEqual(2, numbers.Count);
+        }
+        [TestMethod]
+        public void TestAddTwoListsUnderCapacity()
+        {
+            //arrange
+            CustomList<int> list1 = new CustomList<int>();
+            list1.Add(23);
+            list1.Add(30);
+            list1.Add(35);
+            list1.Add(23);
+            list1.Add(30);
+            CustomList<int> list2 = new CustomList<int>();
+            list2.Add(17);
+            list2.Add(29);
+            list2.Add(47);
+            list2.Add(23);
+            list2.Add(35);
+            //act
+            CustomList<int> list = list1 + list2;
+            //assert
+            Assert.AreEqual(10, list.Count);
+        }
+        [TestMethod]
+        public void TestAddTwoListsOverCapacity()
+        {
+            //arrange
+            CustomList<int> list1 = new CustomList<int>();
+            list1.Add(23);
+            list1.Add(30);
+            list1.Add(35);
+            list1.Add(23);
+            list1.Add(30);
+            list1.Add(43);
+            CustomList<int> list2 = new CustomList<int>();
+            list2.Add(17);
+            list2.Add(29);
+            list2.Add(47);
+            list2.Add(23);
+            list2.Add(35);
+            list2.Add(99);
+            //act
+            CustomList<int> list = list1 + list2;
+            //assert
+            Assert.AreEqual(12, list.Count);
+        }
+        [TestMethod]
+        public void TestSubtractTwoLists()
+        {
+            //arrange
+            CustomList<int> list1 = new CustomList<int>();
+            list1.Add(23);
+            list1.Add(30);
+            list1.Add(35);
+            list1.Add(19);
+            list1.Add(103);
+            list1.Add(1);
+            CustomList<int> list2 = new CustomList<int>();
+            list2.Add(23);
+            list2.Add(29);
+            list2.Add(35);
+            list2.Add(23);
+            list2.Add(39);
+            list2.Add(99);
+            //act
+            CustomList<int> list = list1 - list2;
+            //assert
+            Assert.AreEqual(4, list.Count);
+        }
+
+        }
     }
-}

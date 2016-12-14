@@ -12,8 +12,19 @@ namespace CustomList
         T[] contents;
         private int capacity;
         private int count;
-        public int Capacity { get { return capacity; } set {; } } 
-        public int Count { get { return count; } set {; } }
+        public int Capacity { get { return capacity; } set { capacity = value; } } 
+        public int Count { get { return count; } set {count = value; } }
+        public T this[int i]
+        {
+            get
+            {
+                return contents[i];
+            }
+            set
+            {
+                contents[i] = value;
+            }
+        }
         public CustomList()
         {
             count = 0;
@@ -24,13 +35,13 @@ namespace CustomList
         {
             if(count >= capacity)
             {
-                T[] temp = new T[capacity = capacity * 2];
+                T[] temporary = new T[capacity = capacity * 2];
                 for(int i = 0; i < count; i++)
                 {
-                    temp[i] = contents[i];
+                    temporary[i] = contents[i];
                 }
-                temp[count] = item;
-                contents = temp;
+                temporary[count] = item;
+                contents = temporary;
                 count++;
             }
             else
@@ -45,9 +56,24 @@ namespace CustomList
                 count++;
             } 
         }
-        public void Insert(int index, T item)
+        public void InsertAt(int index, T item)
         {
-            contents[index] = item;
+            if (count >= capacity)
+            {
+                T[] temporary = new T[capacity = capacity * 2];
+                for (int i = 0; i < count; i++)
+                {
+                    temporary[i] = contents[i];
+                }
+                temporary[index] = item;
+                contents = temporary;
+                count++;
+            }
+            else
+            {
+                contents[index] = item;
+                count++;
+            }
         }
         public object ReadIndex(int index)
         {
@@ -70,6 +96,7 @@ namespace CustomList
         public void RemoveAt(int index)
         {
             contents[index] = default(T);
+            Count--;
         }
         public bool Remove(T item)
         {
@@ -81,15 +108,57 @@ namespace CustomList
             }
             catch { return false; }
         }
-        //public static CustomList<T> operator +(CustomList<T> list1, CustomList<T> list2)
-        //{
-        //}
-        //public static CustomList<T> operator -(CustomList<T> list1, CustomList<T> list2)
-        //{
-        //}
+        public static CustomList<T> operator +(CustomList<T> list1, CustomList<T> list2)
+        {
+            T[] temporary = new T[list1.Capacity + list2.Capacity];
+            CustomList<T> newList = new CustomList<T>();
+            newList.contents = temporary;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                newList.InsertAt(i, list1[i]);
+            }
+            for (int i = list1.Count; i < list1.count + list2.Count; i++)
+            {
+                newList.InsertAt(i,list2[i - list1.Count]);
+            }
+            return newList;
+        }
+        public static CustomList<T> operator -(CustomList<T> list1, CustomList<T> list2)
+        {
+            T[] temporary = new T[list1.Capacity];
+            CustomList<T> newList = new CustomList<T>();
+            newList.contents = temporary;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                newList.InsertAt(i, list1[i]);
+            }
+            for (int i = 0; i < newList.Count; i++)
+            {
+                if (newList[i].Equals(list2[i]))
+                {
+                    newList.RemoveAt(i);
+                }
+            }
+            return newList;
+        }
         public override string ToString()
         {
-            return base.ToString();
+            string conversion = string.Empty;
+            foreach (T item in contents)
+            {
+                if (string.IsNullOrEmpty(conversion))
+                { conversion += item.ToString(); }
+                else
+                { conversion += string.Format(", {0}", item); }
+            }
+            return conversion;
+        }
+        public void Display()
+        {
+            foreach (T item in contents)
+            {
+                Console.WriteLine(item);
+            }
         }
         public IEnumerator<T> GetEnumerator()
         {
