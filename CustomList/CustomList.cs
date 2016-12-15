@@ -141,6 +141,23 @@ namespace CustomList
             }
             return newList;
         }
+        public CustomList<T> Zip(CustomList<T> list2)
+        {
+            int x = 0;
+            int y = 0;
+            T[] temporary = new T[this.Capacity + list2.Capacity];
+            CustomList<T> newList = new CustomList<T>();
+            newList.contents = temporary;
+            for (int i = 0; x < this.Count; i+= 2, x++)
+            {
+                    newList.InsertAt(i, this[x]);
+            }
+            for (int i = 1; y < list2.count; i+= 2, y++)
+            {
+                    newList.InsertAt(i, list2[y]);
+            }
+            return newList;
+        }
         public override string ToString()
         {
             string conversion = string.Empty;

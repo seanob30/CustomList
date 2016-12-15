@@ -195,6 +195,27 @@ namespace UnitTestCustomList
             //assert
             Assert.AreEqual(4, list.Count);
         }
-
+        [TestMethod]
+        public void TestZipsTwoLists()
+        {
+            //arrange
+            CustomList<int> newList = new CustomList<int>();
+            CustomList<int> list1 = new CustomList<int>();
+            list1.Add(23);
+            list1.Add(30);
+            list1.Add(35);
+            list1.Add(23);
+            list1.Add(30);
+            CustomList<int> list2 = new CustomList<int>();
+            list2.Add(17);
+            list2.Add(29);
+            list2.Add(47);
+            list2.Add(23);
+            list2.Add(99);
+            //act
+            newList = list1.Zip(list2);
+            //assert
+            Assert.AreEqual(35, newList[4]);
         }
     }
+}
