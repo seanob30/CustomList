@@ -199,23 +199,19 @@ namespace UnitTestCustomList
         public void TestZipsTwoLists()
         {
             //arrange
+            int x = 1;
+            int y = 2;
             CustomList<int> newList = new CustomList<int>();
             CustomList<int> list1 = new CustomList<int>();
-            list1.Add(23);
-            list1.Add(30);
-            list1.Add(35);
-            list1.Add(23);
-            list1.Add(30);
             CustomList<int> list2 = new CustomList<int>();
-            list2.Add(17);
-            list2.Add(29);
-            list2.Add(47);
-            list2.Add(23);
-            list2.Add(99);
+            for (int i = 0; i < 20; i++, x+=2)
+            { list1.InsertAt(i, x); }
+            for (int i = 0; i < 10; i++, y += 2)
+            { list2.InsertAt(i, y); }
             //act
             newList = list1.Zip(list2);
             //assert
-            Assert.AreEqual(35, newList[4]);
+            Assert.AreEqual(5, newList[4]);
         }
     }
 }

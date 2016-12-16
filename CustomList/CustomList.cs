@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CustomList
 {
-    public class CustomList<T> : IEnumerable
+    public class CustomList<T> : IEnumerable where T : IComparable
     {
         T[] contents;
         private int capacity;
@@ -143,20 +143,57 @@ namespace CustomList
         }
         public CustomList<T> Zip(CustomList<T> list2)
         {
-            int x = 0;
-            int y = 0;
             T[] temporary = new T[this.Capacity + list2.Capacity];
             CustomList<T> newList = new CustomList<T>();
             newList.contents = temporary;
-            for (int i = 0; x < this.Count; i+= 2, x++)
+            if (this.Count > list2.Count)
             {
-                    newList.InsertAt(i, this[x]);
+                for (int i = 0; i < list2.Count; i++)
+                {
+                     newList.Add(this[i]);
+                     newList.Add(list2[i]);
+                }
+                for (int i = list2.Count; i < this.Count; i++)
+                {
+                    newList.Add(this[i]);
+                }
             }
-            for (int i = 1; y < list2.count; i+= 2, y++)
+            else if(this.Count < list2.Count)
             {
-                    newList.InsertAt(i, list2[y]);
+                for (int i = 0; i < this.Count; i++)
+                {
+                    newList.Add(this[i]);
+                    newList.Add(list2[i]);
+                }
+                for (int i = this.Count; i < list2.Count; i++)
+                {
+                    newList.Add(list2[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this.Count; i++)
+                {
+                    newList.Add(this[i]);
+                    newList.Add(list2[i]);
+                }
             }
             return newList;
+        }
+        public void Sort()
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                for (int x = 0; x < Count - 1; x++)
+                {
+                    if (contents[x].CompareTo(contents[x + 1]) > 0)
+                    {
+                        T temporary = contents[x];
+                        contents[x + 1] = contents[x];
+                        contents[x] = temporary;
+                    }
+                }
+            }
         }
         public override string ToString()
         {
